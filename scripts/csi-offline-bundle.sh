@@ -23,6 +23,9 @@ usage() {
    echo "-r <registry>  Required if preparing offline bundle with '-p'"
    echo "               Supply the registry name/path which will hold the images"
    echo "               For example: my.registry.com:5000/dell/csi"
+   echo "-t <storage>   Optional if creating bundle with '-c'"
+   echo "               Include images for storage type <storage> only"
+   echo "               For example: isilon"
    echo "-h             Displays this information"
    echo
    echo "Exactly one of '-c' or '-p' needs to be specified"
@@ -85,8 +88,18 @@ build_image_manifest() {
     fi
   done
 
+  if [ "${STOR_TYPE}" == "" ]; then
+    STOR_EXCL="//"
+  else
+    # create exclusion list of all storage types except the one specified.
+    STOR_EXCL=`ls ${REPODIR}/samples | cut -d'_' -f1 | sort | uniq | egrep -v "${STOR_TYPE}" | sed -e 's/ /|/g'`
+    # also exclude 'sdc' if 'vxflex' is excluded.
+    (echo $STOR_EXCL | egrep 'vxflex' >& /dev/null) && STOR_EXCL="${STOR_EXCL}|sdc" 
+    #STOR_EXCL_REGEX="`echo ${STOR_EXCL} | sed -e 's/ /|/g'`"
+  fi
+
   # sort and uniqify the list
-  cat "${IMAGEMANIFEST}.tmp" | sort | uniq > "${IMAGEMANIFEST}"
+  cat "${IMAGEMANIFEST}.tmp" | sort | uniq | egrep -v "${STOR_EXCL}" > "${IMAGEMANIFEST}"
   rm "${IMAGEMANIFEST}.tmp"
 }
 
@@ -274,7 +287,7 @@ else
   )
 fi
 
-while getopts "cpr:h" opt; do
+while getopts "cpr:t:h" opt; do
   case $opt in
     c)
       CREATE="true"
@@ -284,6 +297,9 @@ while getopts "cpr:h" opt; do
       ;;
     r)
       REGISTRY="${OPTARG}"
+      ;;
+    t)
+      STOR_TYPE="${OPTARG}"
       ;;
     h)
       usage
