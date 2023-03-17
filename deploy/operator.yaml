@@ -299,6 +299,18 @@ rules:
 - apiGroups:
   - storage.k8s.io
   resources:
+  - csistoragecapacities
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - storage.k8s.io
+  resources:
   - storageclasses
   verbs:
   - create
@@ -433,7 +445,7 @@ spec:
         env:
         - name: OPERATOR_DRIVERS
           value: unity,powermax,isilon,vxflexos,powerstore
-        image: dellemc/dell-csi-operator:v1.9.0
+        image: docker.io/dellemc/dell-csi-operator:v1.11.0
         imagePullPolicy: Always
         name: dell-csi-operator-controller
         volumeMounts:

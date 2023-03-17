@@ -29,7 +29,7 @@ spec:
               value: csi-powerstore.dellemc.com
             - name: X_CSI_POWERSTORE_TMP_DIR
               value: /var/lib/kubelet/plugins/csi-powerstore.dellemc.com/tmp
-            - name: X_CSI_POWERSTORE_NODENAME
+            - name: X_CSI_POWERSTORE_KUBE_NODE_NAME
               valueFrom:
                 fieldRef:
                   apiVersion: v1
@@ -54,7 +54,7 @@ spec:
               value: /powerstore-config-params/driver-config-params.yaml
             - name: X_CSI_HEALTH_MONITOR_ENABLED
               value: "false"
-          image: dellemc/csi-powerstore:v2.3.0
+          image: dellemc/csi-powerstore:v2.6.0
           imagePullPolicy: IfNotPresent
           name: driver
           resources: {}
@@ -109,7 +109,7 @@ spec:
                 fieldRef:
                   apiVersion: v1
                   fieldPath: spec.nodeName
-          image: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.5.1
+          image: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.6.3
           imagePullPolicy: IfNotPresent
           name: registrar
           resources: {}

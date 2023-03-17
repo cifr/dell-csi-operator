@@ -58,6 +58,8 @@ spec:
           value: "false"
         - name: X_CSI_ISI_VOLUME_PATH_PERMISSIONS
           value: "0777"
+        - name: X_CSI_ISI_IGNORE_UNRESOLVABLE_HOSTS
+          value: "false"
         - name: X_CSI_HEALTH_MONITOR_ENABLED
           value: "false"
         - name: X_CSI_VERBOSE
@@ -70,7 +72,7 @@ spec:
           value: "true"
         - name: X_CSI_ISI_ACCESS_ZONE
           value: System
-        image: dellemc/csi-isilon:v2.3.0
+        image: dellemc/csi-isilon:v2.6.0
         imagePullPolicy: IfNotPresent
         name: driver
         resources: {}
@@ -101,7 +103,7 @@ spec:
         env:
         - name: ADDRESS
           value: /var/run/csi/csi.sock
-        image: k8s.gcr.io/sig-storage/csi-provisioner:v3.1.0
+        image: k8s.gcr.io/sig-storage/csi-provisioner:v3.4.0
         imagePullPolicy: IfNotPresent
         name: provisioner
         resources: {}
@@ -122,7 +124,7 @@ spec:
         env:
         - name: ADDRESS
           value: /var/run/csi/csi.sock
-        image: gcr.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.5.0
+        image: gcr.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.8.0
         imagePullPolicy: IfNotPresent
         name: external-health-monitor
         resources: {}
@@ -140,7 +142,7 @@ spec:
         env:
         - name: ADDRESS
           value: /var/run/csi/csi.sock
-        image: k8s.gcr.io/sig-storage/csi-attacher:v3.4.0
+        image: k8s.gcr.io/sig-storage/csi-attacher:v4.2.0
         imagePullPolicy: IfNotPresent
         name: attacher
         resources: {}
@@ -158,7 +160,7 @@ spec:
         env:
         - name: ADDRESS
           value: /var/run/csi/csi.sock
-        image: k8s.gcr.io/sig-storage/csi-snapshotter:v5.0.1
+        image: k8s.gcr.io/sig-storage/csi-snapshotter:v6.2.1
         imagePullPolicy: IfNotPresent
         name: snapshotter
         resources: {}
@@ -175,7 +177,7 @@ spec:
         env:
         - name: ADDRESS
           value: /var/run/csi/csi.sock
-        image: k8s.gcr.io/sig-storage/csi-resizer:v1.4.0
+        image: k8s.gcr.io/sig-storage/csi-resizer:v1.7.0
         imagePullPolicy: IfNotPresent
         name: resizer
         resources: {}

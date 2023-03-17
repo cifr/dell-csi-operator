@@ -5,14 +5,15 @@ metadata:
   namespace: test-isilon
 spec:
   driver:
-    # Config version for CSI PowerScale v2.3.0 driver
-    configVersion: v2.3.0
+    # Config version for CSI PowerScale v2.6.0 driver
+    configVersion: v2.6.0
     replicas: 1
     dnsPolicy: ClusterFirstWithHostNet
     forceUpdate: false
+    storageCapacity: false
     common:
-      # Image for CSI PowerScale driver v2.3.0
-      image: "dellemc/csi-isilon:v2.3.0"
+      # Image for CSI PowerScale driver v2.6.0
+      image: "dellemc/csi-isilon:v2.6.0"
       imagePullPolicy: IfNotPresent
       envs:
         # X_CSI_VERBOSE: Indicates what content of the OneFS REST API message should be logged in debug level logs
@@ -109,6 +110,16 @@ spec:
       # Examples: "0777", "777", "0755"
       - name: X_CSI_ISI_VOLUME_PATH_PERMISSIONS
         value: "0777"
+
+      # X_CSI_ISI_IGNORE_UNRESOLVABLE_HOSTS: Ignore unresolvable hosts on the OneFS
+      # When set to true, OneFS allows new host to add to existing export list though any of the existing hosts from the
+      # same exports are unresolvable/doesn't exist anymore.
+      # Allowed values:
+      #   true: ignore existing unresolvable hosts and append new host to the existing export
+      #   false: exhibits OneFS default behavior i.e. if any of existing hosts are unresolvable while adding new one it fails
+      # Default value: false
+      - name: X_CSI_ISI_IGNORE_UNRESOLVABLE_HOSTS
+        value: "false"
 
     node:
       envs:

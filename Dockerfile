@@ -1,5 +1,5 @@
 # Build the manager binary
-FROM golang:1.18 as builder
+FROM golang:1.20 as builder
 
 WORKDIR /workspace
 # Copy the Go Modules manifests
@@ -19,8 +19,8 @@ COPY pkg/ pkg/
 # Build
 
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 GO111MODULE=on go build -a -o manager main.go
-
-FROM registry.access.redhat.com/ubi8/ubi-minimal@sha256:9a81cce19ae2a962269d4a7fecd38aec60b852118ad798a265c3f6c4be0df610
+# Tag corresponding to digest ab03679e683010d485ef0399e056b09a38d7843ba4a36ee7dec337dd0037f7a7 is redhat/ubi8-minimal:8.7-1085
+FROM registry.access.redhat.com/ubi8/ubi-minimal@sha256:ab03679e683010d485ef0399e056b09a38d7843ba4a36ee7dec337dd0037f7a7
 
 RUN microdnf install yum \
     && yum -y update-minimal --security --sec-severity=Important --sec-severity=Critical \
@@ -38,7 +38,7 @@ LABEL vendor="Dell Inc." \
       name="dell-csi-operator" \
       summary="Operator for installing Dell CSI drivers" \
       description="Common Operator for installing various Dell CSI drivers" \
-      version="1.9.0" \
+      version="1.11.0" \
       license="Dell CSI Operator EULA"
 # copy the licenses folder
 COPY licenses /licenses

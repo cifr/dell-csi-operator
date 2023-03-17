@@ -1,8 +1,23 @@
+/*
+ Copyright © 2022 Dell Inc. or its subsidiaries. All Rights Reserved.
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+      http://www.apache.org/licenses/LICENSE-2.0
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+*/
+
 package rbac
 
 import (
 	"context"
 	"fmt"
+
 	csiv1 "github.com/dell/dell-csi-operator/api/v1"
 	"github.com/dell/dell-csi-operator/pkg/resources"
 	"github.com/go-logr/logr"
@@ -31,6 +46,7 @@ func NewDummyClusterRole(name string) *rbacv1.ClusterRole {
 func NewControllerClusterRole(instance csiv1.CSIDriver, customClusterRoleName bool, haRequired bool, dummyClusterRole *rbacv1.ClusterRole) *rbacv1.ClusterRole {
 	driverName := instance.GetName()
 	driverNamespace := instance.GetNamespace()
+	driverType := instance.GetDriverType()
 	clusterRoleName := fmt.Sprintf("%s-controller", driverName)
 	if customClusterRoleName {
 		clusterRoleName = fmt.Sprintf("%s-%s-controller", driverNamespace, driverName)
@@ -134,6 +150,18 @@ func NewControllerClusterRole(instance csiv1.CSIDriver, customClusterRoleName bo
 			APIGroups: []string{"coordination.k8s.io"},
 			Resources: []string{"leases"},
 			Verbs:     []string{"create", "get", "list", "watch", "delete", "update"},
+		})
+	}
+	if driverType == "powerstore" {
+		clusterRole.Rules = append(clusterRole.Rules, rbacv1.PolicyRule{
+			APIGroups: []string{"storage.k8s.io"},
+			Resources: []string{"csistoragecapacities"},
+			Verbs:     []string{"get", "list", "watch", "create", "update", "patch", "delete"},
+		})
+		clusterRole.Rules = append(clusterRole.Rules, rbacv1.PolicyRule{
+			APIGroups: []string{"apps"},
+			Resources: []string{"replicasets"},
+			Verbs:     []string{"get"},
 		})
 	}
 	return clusterRole

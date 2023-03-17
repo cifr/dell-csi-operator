@@ -1,3 +1,16 @@
+<!--
+ Copyright © 2022 Dell Inc. or its subsidiaries. All Rights Reserved.
+ 
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+      http://www.apache.org/licenses/LICENSE-2.0
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
 - [Dell CSI Operator](#dell-csi-operator)
   - [Support](#support)
   - [Supported Platforms](#supported-platforms)
@@ -32,8 +45,8 @@ For any CSI operator and driver issues, questions or feedback, join the [Dell EM
 ## Supported Platforms
 Dell CSI Operator has been tested and qualified with 
 
-    * Upstream Kubernetes cluster v1.22, v1.23, v1.24
-    * OpenShift Clusters 4.9, 4.10 with RHEL 7.x (with OCP 4.9), RHEL 8.x (with OCP 4.10) & RHCOS worker nodes
+    * Upstream Kubernetes cluster v1.23, v1.24, v1.25
+    * OpenShift Clusters 4.10, 4.11 with RHEL 8.x & RHCOS worker nodes
 
 ## Installation
 To install Dell CSI Operator please refer the steps given here at [https://dell.github.io/csm-docs/docs/csidriver/installation/operator/](https://dell.github.io/csm-docs/docs/csidriver/installation/operator/)
